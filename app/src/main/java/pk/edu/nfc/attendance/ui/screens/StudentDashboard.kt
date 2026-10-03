@@ -3,7 +3,6 @@ package pk.edu.nfc.attendance.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -19,6 +18,7 @@ import pk.edu.nfc.attendance.data.local.UserEntity
 import pk.edu.nfc.attendance.ui.MainViewModel
 import pk.edu.nfc.attendance.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentDashboard(vm: MainViewModel, user: UserEntity) {
     val presentCount by vm.repository.getStudentPresentCount(user.id).collectAsState(initial = 0)
@@ -71,14 +71,14 @@ fun StudentDashboard(vm: MainViewModel, user: UserEntity) {
                         Spacer(Modifier.height(12.dp))
                         Box(contentAlignment = Alignment.Center) {
                             CircularProgressIndicator(
-                                progress = { (percentage / 100f).coerceIn(0f, 1f) },
+                                progress = (percentage / 100f).coerceIn(0f, 1f),
                                 modifier = Modifier.size(110.dp),
                                 strokeWidth = 10.dp,
                                 color = if (isShortage) StatusAbsentRed else StatusPresentGreen,
                                 trackColor = Color(0xFFE0E0E0)
                             )
                             Text(
-                                "${percentage.toInt()}%",
+                                text = "${percentage.toInt()}%",
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = if (isShortage) StatusAbsentRed else StatusPresentGreen
