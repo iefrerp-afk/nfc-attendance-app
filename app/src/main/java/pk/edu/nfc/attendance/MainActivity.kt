@@ -50,7 +50,6 @@ fun AppNavigation(vm: MainViewModel = viewModel()) {
     }
 }
 
-// ---------------- LOGIN SCREEN ----------------
 @Composable
 fun LoginScreen(vm: MainViewModel) {
     val admins by vm.allAdmins.collectAsState()
@@ -67,7 +66,6 @@ fun LoginScreen(vm: MainViewModel) {
             Text("NFC-IEFR Attendance", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1F4E78))
             Text("Select an identity to test offline role", color = Color.Gray, modifier = Modifier.padding(bottom = 24.dp))
 
-            // Administrator Portal Entry
             Text("System Administration", fontWeight = FontWeight.Bold, color = Color(0xFFB02A37))
             admins.forEach { u ->
                 Button(
@@ -119,7 +117,6 @@ fun LoginScreen(vm: MainViewModel) {
     }
 }
 
-// ---------------- ADMIN DASHBOARD & CREATION SUITE ----------------
 @Composable
 fun AdminDashboard(vm: MainViewModel, user: User) {
     var showStudentDialog by remember { mutableStateOf(false) }
@@ -174,7 +171,6 @@ fun AdminDashboard(vm: MainViewModel, user: User) {
         }
     }
 
-    // Modal: Add Student
     if (showStudentDialog) {
         var name by remember { mutableStateOf("") }
         var roll by remember { mutableStateOf("") }
@@ -202,7 +198,6 @@ fun AdminDashboard(vm: MainViewModel, user: User) {
         )
     }
 
-    // Modal: Add Faculty
     if (showTeacherDialog) {
         var name by remember { mutableStateOf("") }
         var dept by remember { mutableStateOf("Computer Science") }
@@ -228,7 +223,6 @@ fun AdminDashboard(vm: MainViewModel, user: User) {
         )
     }
 
-    // Modal: Add Course / Timetable Slot
     if (showClassDialog) {
         var subject by remember { mutableStateOf("") }
         var slot by remember { mutableStateOf("08:30 - 09:30") }
@@ -267,7 +261,6 @@ fun AdminDashboard(vm: MainViewModel, user: User) {
     }
 }
 
-// ---------------- STUDENT DASHBOARD ----------------
 @Composable
 fun StudentDashboard(vm: MainViewModel, user: User) {
     val presentCount by vm.getStudentPresentCount(user.id).collectAsState(0)
@@ -303,7 +296,6 @@ fun StudentDashboard(vm: MainViewModel, user: User) {
     }
 }
 
-// ---------------- TEACHER DASHBOARD & ATTENDANCE INTERACTION ----------------
 @Composable
 fun TeacherDashboard(vm: MainViewModel, user: User) {
     val classes by vm.getTeacherClasses(user.id).collectAsState(emptyList())
@@ -398,7 +390,6 @@ fun TakeAttendanceScreen(vm: MainViewModel, cls: ClassSession, onBack: () -> Uni
     }
 }
 
-// ---------------- HOD DASHBOARD ----------------
 @Composable
 fun HodDashboard(vm: MainViewModel, user: User) {
     val allClasses by vm.allClasses.collectAsState()
@@ -419,7 +410,6 @@ fun HodDashboard(vm: MainViewModel, user: User) {
     }
 }
 
-// ---------------- HEADER COMPONENT ----------------
 @Composable
 fun Header(name: String, title: String, vm: MainViewModel) {
     Row(
