@@ -21,11 +21,13 @@ import pk.edu.nfc.attendance.data.local.*
 import pk.edu.nfc.attendance.ui.MainViewModel
 import pk.edu.nfc.attendance.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeacherDashboard(vm: MainViewModel, teacher: UserEntity) {
     val teacherClasses by vm.repository.getTeacherClasses(teacher.id).collectAsState(initial = emptyList())
     val students by vm.allStudents.collectAsState()
     var activeClassForAttendance by remember { mutableStateOf<TimetableEntity?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     if (activeClassForAttendance != null) {
         MarkAttendanceScreen(
@@ -33,7 +35,7 @@ fun TeacherDashboard(vm: MainViewModel, teacher: UserEntity) {
             students = students,
             onDismiss = { activeClassForAttendance = null },
             onSubmit = { records ->
-                vm.viewModelScope.launch {
+                coroutineScope.launch {
                     vm.repository.recordAttendance(activeClassForAttendance!!.id, teacher.id, records)
                     activeClassForAttendance = null
                 }
@@ -43,7 +45,7 @@ fun TeacherDashboard(vm: MainViewModel, teacher: UserEntity) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Faculty Workspace — ${teacher.fullName}", fontSize = 18.sp) },
+                    title = { Text("Faculty Workspace - ${teacher.fullName}", fontSize = 18.sp) },
                     actions = {
                         TextButton(onClick = { vm.logout() }) {
                             Text("Logout", color = Color.White, fontWeight = FontWeight.Bold)
@@ -101,6 +103,7 @@ fun TeacherDashboard(vm: MainViewModel, teacher: UserEntity) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarkAttendanceScreen(
     timetable: TimetableEntity,
